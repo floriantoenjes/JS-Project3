@@ -14,14 +14,14 @@ $("#title").change(function(evt) {
 });
 
 
-// Only show T-Shirt themes that go together
+// Only show selected t-shirt colors that belong to theme
 const $colorSelect = $("#color");
-
 $colorSelect.children().hide();
-$colorSelect.append("<option value='default'><-- Please choose a theme</option>");
 
+$colorSelect.append("<option value='default'><-- Please choose a theme</option>");
 $colorSelect.val("default");
-$colorSelect[0].disabled = true;
+$colorSelect.attr("disabled", true);
+
 $("#design").change(function(evt) {
     const theme = $(this).val();
     switch (theme) {
@@ -35,7 +35,7 @@ $("#design").change(function(evt) {
 
         default:
             hideThemeOptions("<--");
-            $colorSelect[0].disabled = true;
+            $colorSelect.attr("disabled", true);
             break;
     }
     console.log($colorSelect.val());
@@ -51,5 +51,5 @@ function hideThemeOptions(theme) {
             $colorSelect.val($option.val());
         }
     });
-    $colorSelect[0].disabled = false;
+    $colorSelect.attr("disabled", false);
 }
