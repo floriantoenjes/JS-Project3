@@ -21,6 +21,7 @@ $colorSelect.children().hide();
 $colorSelect.append("<option value='default'><-- Please choose a theme</option>");
 
 $colorSelect.val("default");
+$colorSelect[0].disabled = true;
 $("#design").change(function(evt) {
     const theme = $(this).val();
     switch (theme) {
@@ -34,6 +35,7 @@ $("#design").change(function(evt) {
 
         default:
             hideThemeOptions("<--");
+            $colorSelect[0].disabled = true;
             break;
     }
     console.log($colorSelect.val());
@@ -49,4 +51,5 @@ function hideThemeOptions(theme) {
             $colorSelect.val($option.val());
         }
     });
+    $colorSelect[0].disabled = false;
 }
