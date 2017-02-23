@@ -85,3 +85,16 @@ $("#payment").change(function(){
             break;
     }
 });
+
+
+
+const $labelAll = $("input[name=all]").parent();
+const cost = $labelAll.text().match(/\$\d+/);
+
+const $labelJSFrameworks = $("input[name=js-frameworks]").parent();
+const cost1 = $labelJSFrameworks.text().match(/\$\d+/);
+const time1 = $labelJSFrameworks.text().match(/\w+\s\d+[ap]m-\d+[ap]m/)[0];
+
+
+
+
