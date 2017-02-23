@@ -18,24 +18,22 @@ $("#title").change(function(evt) {
 const $colorSelect = $("#color");
 $colorSelect.children().hide();
 
-$colorSelect.append("<option value='default'><-- Please choose a theme</option>");
 $colorSelect.val("default");
-$colorSelect.attr("disabled", true);
+$colorSelect.hide();
 
 $("#design").change(function(evt) {
     const theme = $(this).val();
     switch (theme) {
         case "js puns":
-            hideThemeOptions("JS Puns");
+            hideThemeOptions("(JS Puns shirt only)");
             break;
 
         case "heart js":
-            hideThemeOptions("I ♥ JS");
+            hideThemeOptions("(I ♥ JS shirt only)");
             break;
 
         default:
-            hideThemeOptions("<--");
-            $colorSelect.attr("disabled", true);
+            $colorSelect.hide();
             break;
     }
     console.log($colorSelect.val());
@@ -44,12 +42,18 @@ $("#design").change(function(evt) {
 function hideThemeOptions(theme) {
     $colorSelect.children().toArray().reverse().forEach(option => {
         const $option = $(option);
+
+        $option.text($option.attr("theme"));
+
         if (!$option.text().includes(theme)) {
             $option.hide();
         } else {
             $option.show();
+
+            $option.attr("theme", $option.text());
+            $option.text($option.text().replace(theme, ""));
             $colorSelect.val($option.val());
         }
     });
-    $colorSelect.attr("disabled", false);
+    $colorSelect.show();
 }
