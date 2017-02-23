@@ -27,11 +27,9 @@ $("#design").change(function(evt) {
         case "js puns":
             hideThemeOptions("(JS Puns shirt only)");
             break;
-
         case "heart js":
             hideThemeOptions("(I ♥ JS shirt only)");
             break;
-
         default:
             $colorSelect.hide();
             break;
@@ -56,3 +54,34 @@ function hideThemeOptions(theme) {
     });
     $colorSelect.show();
 }
+
+// Only show selected payment option
+const $creditCard = $("#credit-card").hide();
+const $paypal = $creditCard.next().hide();
+const $bitcoin = $paypal.next().hide();
+
+$("#payment").change(function(){
+    const paymentType = $(this).val();
+
+    switch (paymentType) {
+        case "credit card":
+            console.log("Credit card");
+            $("#credit-card").show();
+            break;
+        case "paypal":
+            $creditCard.hide();
+            $bitcoin.hide();
+            $paypal.show();
+            break;
+        case "bitcoin":
+            $creditCard.hide();
+            $paypal.hide();
+            $bitcoin.show();
+            break;
+        default:
+            $creditCard.hide();
+            $paypal.hide();
+            $bitcoin.hide();
+            break;
+    }
+});
