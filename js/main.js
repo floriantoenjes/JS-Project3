@@ -16,10 +16,13 @@ $("#title").change(function(evt) {
 
 // Only show T-Shirt themes that go together
 const $colorSelect = $("#color");
+
 $colorSelect.children().hide();
+$colorSelect.append("<option value='default'><-- Please choose a theme</option>");
+
+$colorSelect.val("default");
 $("#design").change(function(evt) {
     const theme = $(this).val();
-
     switch (theme) {
         case "js puns":
             hideThemeOptions("JS Puns");
@@ -30,20 +33,20 @@ $("#design").change(function(evt) {
             break;
 
         default:
-            $colorSelect.children().hide();
+            hideThemeOptions("<--");
             break;
     }
+    console.log($colorSelect.val());
 });
 
 function hideThemeOptions(theme) {
-    $colorSelect.children().toArray().forEach(option => {
+    $colorSelect.children().toArray().reverse().forEach(option => {
         const $option = $(option);
-        console.log($option);
         if (!$option.text().includes(theme)) {
             $option.hide();
         } else {
             $option.show();
+            $colorSelect.val($option.val());
         }
     });
-    $colorSelect.val("");
 }
