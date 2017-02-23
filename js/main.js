@@ -36,7 +36,6 @@ $("#design").change(function(evt) {
             $colorSelect.hide();
             break;
     }
-    console.log($colorSelect.val());
 });
 
 function hideThemeOptions(theme) {
