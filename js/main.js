@@ -102,7 +102,7 @@ $(".activities input").change(function (evt) {
         const input = sibling.firstChild;
         const datetimeOfSibling = getDatetime($(sibling));
 
-        // If this input is checked at it's price to the sum
+        // If this input is checked add it's price to the sum
         if (input.checked) {
             const price = getPrice($(sibling))
             sum += price;
@@ -143,17 +143,18 @@ function getDatetime($element) {
 //
 
 $("form").submit(evt => {
-    evt.preventDefault();
-    checkIfReady();
+    if (!readyToSubmit()) {
+        evt.preventDefault();
+    }
 });
 
-function checkIfReady() {
+function readyToSubmit() {
 
     // Check if name field blank
-    const nameField = $("#name").val().trim().length > 0;
+    const nameFieldFilled = $("#name").val().trim().length > 0;
 
     // Check if email is correctly formatted
-
+    const emailCorrect = $("#mail").val().trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
 
     // Check if an activity is selected
     let activityChecked = false;
@@ -162,4 +163,6 @@ function checkIfReady() {
             return activityChecked = true;
         }
     });
+
+    return (nameFieldFilled && emailCorrect && activityChecked);
 }
