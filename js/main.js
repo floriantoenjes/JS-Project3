@@ -94,16 +94,25 @@ function getPrice($element) {
     return parseFloat($element.text().match(/\$(\d+)/)[1]);
 }
 
+function getDatetime($element) {
+    const results = $element.text().match(/\w+\s\d+[ap]m-\d+[ap]m/);
+    if (results !== null) {
+        return results[0];
+    }
+}
+
 const $activities = $(".activities");
 
 // Bind a function by change event to activity checkboxes
 $(".activities input").change(function (evt) {
     let sum = 0;
+    let datetime;
     const $label = $(this).parent();
 
     // Get the sum of this activity
     if (this.checked) {
         sum += getPrice($label);
+        datetime = getDatetime($label);
     }
 
     // Add up the cost of checked siblings
@@ -114,7 +123,8 @@ $(".activities input").change(function (evt) {
         }
     });
     // Check if the time is already occupied
-    console.log("Sum: " + sum);
+
+    // Append the sum to the activities
     $("#sum").remove();
     $activities.append($(`<p id='sum'>Total: \$${sum}</p>`));
 
