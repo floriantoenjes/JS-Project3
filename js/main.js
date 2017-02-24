@@ -100,16 +100,16 @@ $(".activities input").change(function (evt) {
     // Add up the cost of checked siblings
     $label.siblings("label").toArray().forEach(sibling => {
         const input = sibling.firstChild;
+        const datetimeOfSibling = getDatetime($(sibling));
 
+        // If this input is checked at it's price to the sum
         if (input.checked) {
             const price = getPrice($(sibling))
             sum += price;
         }
 
         // Check if the time is already occupied
-        let datetimeOfSibling = getDatetime($(sibling));
         if (this.checked && datetime === datetimeOfSibling) {
-            console.log(sibling.textContent);
             $(input).attr("disabled", true);
             sibling.style = "color: grey";
         } else if (!this.checked && datetime === datetimeOfSibling) {
@@ -127,7 +127,7 @@ $(".activities input").change(function (evt) {
 });
 
 
-// Extract the dollar price
+// Extract the price in dollar
 function getPrice($element) {
     return parseFloat($element.text().match(/\$(\d+)/)[1]);
 }
