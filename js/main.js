@@ -87,26 +87,35 @@ $("#payment").change(function () {
 
 
 
-const $labelAll = $("input[name=all]").parent();
-const cost = $labelAll.text().match(/\$\d+/);
 
-const $labelJSFrameworks = $("input[name=js-frameworks]").parent();
-const cost1 = $labelJSFrameworks.text().match(/\$\d+/);
-const time1 = $labelJSFrameworks.text().match(/\w+\s\d+[ap]m-\d+[ap]m/)[0];
+//const time1 = $labelJSFrameworks.text().match(/\w+\s\d+[ap]m-\d+[ap]m/)[0];
 
-function getPrice(element) {
-    return element.parent().text().match(/\$\d+/)[0];
+function getPrice($element) {
+    return parseFloat($element.text().match(/\$(\d+)/)[1]);
 }
 
+const $activities = $(".activities");
+
 // Bind a function by change event to activity checkboxes
-$(".activities input").change(function(evt){
+$(".activities input").change(function (evt) {
     let sum = 0;
+    const $label = $(this).parent();
+
+    // Get the sum of this activity
     if (this.checked) {
-        console.log(getPrice($(this)));
+        sum += getPrice($label);
     }
-    // In the function loop over all checkboxes
 
-    // Build a sum from the prices
-
+    // Add up the cost of checked siblings
+    $label.siblings().toArray().forEach(sibling => {
+        const input = sibling.firstChild;
+        if (input.checked) {
+            sum += getPrice($(sibling));
+        }
+    });
     // Check if the time is already occupied
+    console.log("Sum: " + sum);
+    $("#sum").remove();
+    $activities.append($(`<p id='sum'>Total: \$${sum}</p>`));
+
 });
