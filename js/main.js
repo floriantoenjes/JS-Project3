@@ -4,13 +4,13 @@
 $("#name")[0].focus();
 
 // If "other" option is selected show "other-title" textfield
-$("#title").change(function(evt) {
-   if ($(this).val() === "other") {
-       const $textfield = $("<input id='other-title' type='text' placeholder='Your Job Role'/>");
-       $(this).parent().append($textfield);
-   } else {
-       $("#other-title").hide();
-   }
+$("#title").change(function (evt) {
+    if ($(this).val() === "other") {
+        const $textfield = $("<input id='other-title' type='text' placeholder='Your Job Role'/>");
+        $(this).parent().append($textfield);
+    } else {
+        $("#other-title").hide();
+    }
 });
 
 
@@ -21,7 +21,7 @@ $colorSelect.children().hide();
 $colorSelect.val("default");
 $colorSelect.hide();
 
-$("#design").change(function(evt) {
+$("#design").change(function (evt) {
     const theme = $(this).val();
     switch (theme) {
         case "js puns":
@@ -60,12 +60,11 @@ const $creditCard = $("#credit-card").hide();
 const $paypal = $creditCard.next().hide();
 const $bitcoin = $paypal.next().hide();
 
-$("#payment").change(function(){
+$("#payment").change(function () {
     const paymentType = $(this).val();
 
     switch (paymentType) {
         case "credit card":
-            console.log("Credit card");
             $("#credit-card").show();
             break;
         case "paypal":
@@ -95,6 +94,19 @@ const $labelJSFrameworks = $("input[name=js-frameworks]").parent();
 const cost1 = $labelJSFrameworks.text().match(/\$\d+/);
 const time1 = $labelJSFrameworks.text().match(/\w+\s\d+[ap]m-\d+[ap]m/)[0];
 
+function getPrice(element) {
+    return element.parent().text().match(/\$\d+/)[0];
+}
 
+// Bind a function by change event to activity checkboxes
+$(".activities input").change(function(evt){
+    let sum = 0;
+    if (this.checked) {
+        console.log(getPrice($(this)));
+    }
+    // In the function loop over all checkboxes
 
+    // Build a sum from the prices
 
+    // Check if the time is already occupied
+});
