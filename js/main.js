@@ -101,31 +101,49 @@ function getDatetime($element) {
     }
 }
 
-const $activities = $(".activities");
 
-// Bind a function by change event to activity checkboxes
+// Bind a function to change event of activity checkboxes
+const $activities = $(".activities");
 $(".activities input").change(function (evt) {
     let sum = 0;
-    let datetime;
     const $label = $(this).parent();
+    let datetime = getDatetime($label);
 
     // Get the sum of this activity
     if (this.checked) {
         sum += getPrice($label);
-        datetime = getDatetime($label);
+    } else {
+        datetime = "free";
     }
 
     // Add up the cost of checked siblings
-    $label.siblings().toArray().forEach(sibling => {
+    $label.siblings("label").toArray().forEach(sibling => {
+
         const input = sibling.firstChild;
+
+
         if (input.checked) {
-            sum += getPrice($(sibling));
+            const price = getPrice($(sibling))
+            sum += price;
+        }
+
+
+        // Check if the time is already occupied
+        let datetimeOfSibling = getDatetime($(sibling));
+        if (datetime === datetimeOfSibling) {
+            console.log(sibling.textContent);
+            $(input).attr("disabled", true);
+            sibling.style = "color: grey";
+        } else {
+            $(input).attr("disabled", false);
+            sibling.style = "color: black";
         }
     });
-    // Check if the time is already occupied
 
     // Append the sum to the activities
     $("#sum").remove();
-    $activities.append($(`<p id='sum'>Total: \$${sum}</p>`));
+    if (sum > 0) {
+        $activities.append($(`<p id='sum'>Total: \$${sum}</p>`));
+    }
 
 });
