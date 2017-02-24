@@ -65,7 +65,7 @@ $("#payment").change(function () {
 
     switch (paymentType) {
         case "credit card":
-            $("#credit-card").show();
+            $creditCard.show();
             break;
         case "paypal":
             $creditCard.hide();
@@ -138,4 +138,28 @@ function getDatetime($element) {
     if (results !== null) {
         return results[0];
     }
+}
+
+//
+
+$("form").submit(evt => {
+    evt.preventDefault();
+    checkIfReady();
+});
+
+function checkIfReady() {
+
+    // Check if name field blank
+    const nameField = $("#name").val().trim().length > 0;
+
+    // Check if email is correctly formatted
+
+
+    // Check if an activity is selected
+    let activityChecked = false;
+    $(".activities input").toArray().forEach(input => {
+        if (input.checked) {
+            return activityChecked = true;
+        }
+    });
 }
