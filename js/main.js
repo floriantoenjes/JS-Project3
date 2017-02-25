@@ -153,27 +153,12 @@ function readyToSubmit() {
     // Check if the name field is blank
     const $nameField = $("#name");
     const nameFieldFilled = $nameField.val().trim().length > 0;
-    const $nameLabel = $nameField.prev();
-    if (!nameFieldFilled) {
-        $nameLabel.text("Name: (please provide your name)");
-        $nameLabel[0].style = "color: red";
-    } else {
-        $nameLabel.text("Name:");
-        $nameLabel[0].style = "color: black";
-    }
-
+    fieldError($nameField, nameFieldFilled, "Name:", "please provide your name");
 
     // Check if the email is correctly formatted
     const $email = $("#mail");
     const emailCorrect = $email.val().trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
-    const $emailLabel = $email.prev();
-    if (!emailCorrect) {
-        $emailLabel.text("Email: (please provide a valid email address)");
-        $emailLabel[0].style = "color: red";
-    } else {
-        $emailLabel.text("Email:");
-        $emailLabel[0].style = "color: black";
-    }
+    fieldError($email, emailCorrect, "Email:", "please provide a valid email address");
 
 
     // Check if an activity is selected
@@ -184,7 +169,7 @@ function readyToSubmit() {
         }
     });
 
-    // Add / Reset error message;
+    // Add / Reset activity error message
     $("#activityError").remove();
     if (!activityChecked) {
         const $legend = $(".activities legend");
@@ -204,9 +189,25 @@ function readyToSubmit() {
         creditCardValid = ccNumValid && zipValid && cvvValid;
     }
 
+    // Finally return if all the fields are ready for submission
     return (nameFieldFilled && emailCorrect && activityChecked && creditCardValid);
 }
 
+
+// If the boolean expression is not valid create an error in the label with the given error message
+function fieldError($element, bool, message, errorMessage) {
+    const $label = $element.prev();
+    if (!bool) {
+        $label.text(`${message} (${errorMessage})`);
+        $label[0].style = "color: red";
+    } else {
+        $label.text(message);
+        $label[0].style = "color: black";
+    }
+}
+
+
+// Validate the selected element with a given regular expression
 function validate(selector, regex) {
     const valid = $(selector).val().match(regex);
     const $label = $(selector).prev();
