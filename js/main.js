@@ -203,17 +203,22 @@ function readyToSubmit() {
     }
 
     // If credit card is selected validate it's input
-    let creditCardValid = true;
-    if ($("#payment").val() === "credit card") {
+    let paymentValid = true;
+    const $paymentSelect = $("#payment");
+    $paymentSelect[0].style = "border-color: none;";
+    if ($paymentSelect.val() === "credit card") {
         const ccNumValid = validate("#cc-num", /^\d{13,16}$/);
         const zipValid = validate("#zip", /^\d{5}$/);
         const cvvValid = validate("#cvv", /^\d{3}$/);
 
-        creditCardValid = ccNumValid && zipValid && cvvValid;
+        paymentValid = ccNumValid && zipValid && cvvValid;
+    } else if ($paymentSelect.val() === "select_method") {
+        paymentValid = false;
+        $paymentSelect[0].style = "border-color: red;";
     }
 
     // Finally return if all the fields are ready for submission
-    return (nameFieldFilled && emailCorrect && activityChecked && creditCardValid);
+    return (nameFieldFilled && emailCorrect && activityChecked && paymentValid);
 }
 
 // If the boolean expression is not valid create an error in the label with the given error message
