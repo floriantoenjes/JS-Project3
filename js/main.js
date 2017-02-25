@@ -4,12 +4,12 @@
 $("#name")[0].focus();
 
 // If "other" option is selected show "other-title" textfield
+const $otherTitle = $("#other-title").hide();
 $("#title").change(function (evt) {
     if ($(this).val() === "other") {
-        const $textfield = $("<input id='other-title' type='text' placeholder='Your Job Role'/>");
-        $(this).parent().append($textfield);
+        $otherTitle.show();
     } else {
-        $("#other-title").hide();
+        $otherTitle.hide();
     }
 });
 
@@ -88,8 +88,8 @@ $("#payment").change(function () {
 // Bind a function to the change event of the activity checkboxes
 const $activities = $(".activities");
 $(".activities input").change(function (evt) {
-    let sum = 0;
     const $label = $(this).parent();
+    let sum = 0;
     let datetime = getDatetime($label);
 
     // Get the sum of this activity
@@ -102,7 +102,7 @@ $(".activities input").change(function (evt) {
         const input = sibling.firstChild;
         const datetimeOfSibling = getDatetime($(sibling));
 
-        // If this input is checked add it's price to the sum
+        // If the sibling's input is checked add it's price to the sum
         if (input.checked) {
             const price = getPrice($(sibling))
             sum += price;
@@ -140,13 +140,14 @@ function getDatetime($element) {
     }
 }
 
+// Prevent normal form submission
 $("form").submit(evt => {
     if (!readyToSubmit()) {
         evt.preventDefault();
     }
 });
 
-// Check if the form is ready to submit
+// Validate the form and check if it's ready to submit
 function readyToSubmit() {
 
     // Check if the name field is blank
@@ -194,32 +195,32 @@ function readyToSubmit() {
     let creditCardValid = true;
     if ($("#payment").val() === "credit card") {
 
-        const ccNumValid = $("#cc-num").val().match(/\d{13,16}/);
-        const $ccNumLabel = $("#cc-num").prev();
-        if (!ccNumValid) {
-            $ccNumLabel[0].style = "color: red;";
-        } else {
-            $ccNumLabel[0].style = "color: black;";
-        }
+        const ccNumValid = validate("#cc-num", /\d{13,16}/);
+//        const ccNumValid = $("#cc-num").val().match(/\d{13,16}/);
+//        const $ccNumLabel = $("#cc-num").prev();
+//        if (!ccNumValid) {
+//            $ccNumLabel[0].style = "color: red;";
+//        } else {
+//            $ccNumLabel[0].style = "color: black;";
+//        }
 
-        const zipValid = $("#zip").val().match(/^\d{5}$/);
-        const $zipLabel = $("#zip").prev();
-        if (!zipValid) {
-            $zipLabel[0].style = "color: red;";
-        } else {
-            $zipLabel[0].style = "color: black;";
-        }
+        const zipValid = validate("#zip", /^\d{5}$/);
 
-        const cvvValid = $("#cvv").val().match(/^\d{3}$/);
-        const $cvvLabel = $("#cvv").prev();
-        if (!cvvValid) {
-            $cvvLabel[0].style = "color: red;";
-        } else {
-            $cvvLabel[0].style = "color: black;";
-        }
+        const cvvValid = validate("#cvv", /^\d{3}$/);
 
         creditCardValid = ccNumValid && zipValid && cvvValid;
     }
 
     return (nameFieldFilled && emailCorrect && activityChecked && creditCardValid);
+}
+
+function validate(selector, regex) {
+    const valid = $(selector).val().match(regex);
+    const $label = $(selector).prev();
+    if (!valid) {
+        $label[0].style = "color: red;";
+    } else {
+        $label[0].style = "color: black;";
+    }
+    return valid;
 }
