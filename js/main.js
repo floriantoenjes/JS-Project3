@@ -193,20 +193,29 @@ function readyToSubmit() {
     // If credit card is selected validate it's input
     let creditCardValid = true;
     if ($("#payment").val() === "credit card") {
+
         const ccNumValid = $("#cc-num").val().match(/\d{13,16}/);
+        const $ccNumLabel = $("#cc-num").prev();
         if (!ccNumValid) {
-            const $ccNumLabel = $("#cc-num").prev();
             $ccNumLabel[0].style = "color: red;";
+        } else {
+            $ccNumLabel[0].style = "color: black;";
         }
+
         const zipValid = $("#zip").val().match(/^\d{5}$/);
+        const $zipLabel = $("#zip").prev();
         if (!zipValid) {
-            const $zipLabel = $("#zip").prev();
             $zipLabel[0].style = "color: red;";
+        } else {
+            $zipLabel[0].style = "color: black;";
         }
+
         const cvvValid = $("#cvv").val().match(/^\d{3}$/);
+        const $cvvLabel = $("#cvv").prev();
         if (!cvvValid) {
-            const $cvvLabel = $("#cvv").prev();
             $cvvLabel[0].style = "color: red;";
+        } else {
+            $cvvLabel[0].style = "color: black;";
         }
 
         creditCardValid = ccNumValid && zipValid && cvvValid;
