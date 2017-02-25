@@ -147,18 +147,38 @@ $("form").submit(evt => {
     }
 });
 
-// Validate the form and check if it's ready to submit
-function readyToSubmit() {
+$("#name").keyup(function(evt) {
+    validateName();
+});
 
-    // Check if the name field is blank
+$("#mail").keyup(function(evt) {
+    validateEmail();
+});
+
+function validateName() {
     const $nameField = $("#name");
     const nameFieldFilled = $nameField.val().trim().length > 0;
     fieldError($nameField, nameFieldFilled, "Name:", "please provide your name");
 
-    // Check if the email is correctly formatted
+    return nameFieldFilled;
+}
+
+function validateEmail() {
     const $email = $("#mail");
     const emailCorrect = $email.val().trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
     fieldError($email, emailCorrect, "Email:", "please provide a valid email address");
+
+    return emailCorrect;
+}
+
+// Validate the form and check if it's ready to submit
+function readyToSubmit() {
+
+    // Check if the name field is blank
+    const nameFieldFilled = validateName();
+
+    // Check if the email is correctly formatted
+    const emailCorrect = validateEmail();
 
 
     // Check if an activity is selected
