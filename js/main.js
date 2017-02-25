@@ -14,7 +14,7 @@ $("#title").change(function (evt) {
 });
 
 
-// Only show selected t-shirt colors that belong to theme
+// Only show t-shirt colors that belong to selected theme
 const $colorSelect = $("#color");
 $colorSelect.children().hide();
 
@@ -150,10 +150,28 @@ $("form").submit(evt => {
 function readyToSubmit() {
 
     // Check if the name field is blank
-    const nameFieldFilled = $("#name").val().trim().length > 0;
+    const $nameField = $("#name");
+    const nameFieldFilled = $nameField.val().trim().length > 0;
+    const $nameLabel = $nameField.prev();
+    if (!nameFieldFilled) {
+        $nameLabel.text("Name: (please provide your name)");
+        $nameLabel[0].style = "color: red";
+    } else {
+        $nameLabel.text("Name:");
+        $nameLabel[0].style = "color: black";
+    }
 
     // Check if the email is correctly formatted
-    const emailCorrect = $("#mail").val().trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
+    const $email = $("#mail");
+    const emailCorrect = $email.val().trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
+    const $label = $email.prev();
+    if (!emailCorrect) {
+        $label.text("Email: (please provide a valid email address)");
+        $label[0].style = "color: red";
+    } else {
+        $label.text("Email:");
+        $label[0].style = "color: black";
+    }
 
     // Check if an activity is selected
     let activityChecked = false;
@@ -162,16 +180,35 @@ function readyToSubmit() {
             return activityChecked = true;
         }
     });
+    $("#activityError").remove();
+    if (!activityChecked) {
+        const $legend = $(".activities legend");
+        $("#activityError").remove();
+        $("<p id='activityError' style='color: red;'>Please select an Activity</p>").insertAfter($legend);
+    }
+
 
     // If credit card is selected validate it's input
     let creditCardValid = false;
     if ($("#payment").val() === "credit card") {
         const ccNumValid = $("#cc-num").val().match(/\d{13,16}/);
+        if (!ccNumValid) {
+            const $ccNumLabel = $("#cc-num").prev();
+            $ccNumLabel[0].style = "color: red;";
+        }
         const zipValid = $("#zip").val().match(/^\d{5}$/);
+        if (!zipValid) {
+            const $zipLabel = $("#zip").prev();
+            $zipLabel[0].style = "color: red;";
+        }
         const cvvValid = $("#cvv").val().match(/^\d{3}$/);
+        if (!cvvValid) {
+            const $cvvLabel = $("#cvv").prev();
+            $cvvLabel[0].style = "color: red;";
+        }
+
         creditCardValid = ccNumValid && zipValid && cvvValid;
     }
-    console.log(creditCardValid);
 
     return (nameFieldFilled && emailCorrect && activityChecked);
 }
