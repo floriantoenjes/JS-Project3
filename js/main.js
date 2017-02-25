@@ -183,6 +183,8 @@ function readyToSubmit() {
             return activityChecked = true;
         }
     });
+
+    // Add / Reset error message;
     $("#activityError").remove();
     if (!activityChecked) {
         const $legend = $(".activities legend");
@@ -195,7 +197,7 @@ function readyToSubmit() {
     let creditCardValid = true;
     if ($("#payment").val() === "credit card") {
 
-        const ccNumValid = validate("#cc-num", /\d{13,16}/);
+        const ccNumValid = validate("#cc-num", /^\d{13,16}$/);
         const zipValid = validate("#zip", /^\d{5}$/);
         const cvvValid = validate("#cvv", /^\d{3}$/);
 
