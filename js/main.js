@@ -90,7 +90,7 @@ const $activities = $(".activities");
 $(".activities input").change(function (evt) {
     const $label = $(this).parent();
     let sum = 0;
-    let datetime = getDatetime($label);
+    const datetime = getDatetime($label);
 
     // Get the sum of this activity
     if (this.checked) {
