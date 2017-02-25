@@ -186,7 +186,6 @@ function readyToSubmit() {
     // Check if the email is correctly formatted
     const emailCorrect = validateEmail();
 
-
     // Check if an activity is selected
     let activityChecked = false;
     $(".activities input").toArray().forEach(input => {
@@ -202,7 +201,6 @@ function readyToSubmit() {
         $("#activityError").remove();
         $("<p id='activityError' style='color: red;'>Please select an Activity</p>").insertAfter($legend);
     }
-
 
     // If credit card is selected validate it's input
     let creditCardValid = true;
