@@ -126,7 +126,6 @@ $(".activities input").change(function (evt) {
 
 });
 
-
 // Extract the price in dollar
 function getPrice($element) {
     return parseFloat($element.text().match(/\$(\d+)/)[1]);
@@ -139,6 +138,7 @@ function getDatetime($element) {
         return results[0];
     }
 }
+
 
 // Prevent normal form submission
 $("form").submit(evt => {
@@ -193,7 +193,6 @@ function readyToSubmit() {
     return (nameFieldFilled && emailCorrect && activityChecked && creditCardValid);
 }
 
-
 // If the boolean expression is not valid create an error in the label with the given error message
 function fieldError($element, bool, message, errorMessage) {
     const $label = $element.prev();
@@ -205,7 +204,6 @@ function fieldError($element, bool, message, errorMessage) {
         $label[0].style = "color: black";
     }
 }
-
 
 // Validate the selected element with a given regular expression
 function validate(selector, regex) {
