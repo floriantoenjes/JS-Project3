@@ -196,16 +196,7 @@ function readyToSubmit() {
     if ($("#payment").val() === "credit card") {
 
         const ccNumValid = validate("#cc-num", /\d{13,16}/);
-//        const ccNumValid = $("#cc-num").val().match(/\d{13,16}/);
-//        const $ccNumLabel = $("#cc-num").prev();
-//        if (!ccNumValid) {
-//            $ccNumLabel[0].style = "color: red;";
-//        } else {
-//            $ccNumLabel[0].style = "color: black;";
-//        }
-
         const zipValid = validate("#zip", /^\d{5}$/);
-
         const cvvValid = validate("#cvv", /^\d{3}$/);
 
         creditCardValid = ccNumValid && zipValid && cvvValid;
