@@ -140,20 +140,19 @@ function getDatetime($element) {
     }
 }
 
-//
-
 $("form").submit(evt => {
     if (!readyToSubmit()) {
         evt.preventDefault();
     }
 });
 
+// Check if the form is ready to submit
 function readyToSubmit() {
 
-    // Check if name field blank
+    // Check if the name field is blank
     const nameFieldFilled = $("#name").val().trim().length > 0;
 
-    // Check if email is correctly formatted
+    // Check if the email is correctly formatted
     const emailCorrect = $("#mail").val().trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
 
     // Check if an activity is selected
@@ -163,6 +162,16 @@ function readyToSubmit() {
             return activityChecked = true;
         }
     });
+
+    // If credit card is selected validate it's input
+    let creditCardValid = false;
+    if ($("#payment").val() === "credit card") {
+        const ccNumValid = $("#cc-num").val().match(/\d{13,16}/);
+        const zipValid = $("#zip").val().match(/^\d{5}$/);
+        const cvvValid = $("#cvv").val().match(/^\d{3}$/);
+        creditCardValid = ccNumValid && zipValid && cvvValid;
+    }
+    console.log(creditCardValid);
 
     return (nameFieldFilled && emailCorrect && activityChecked);
 }
