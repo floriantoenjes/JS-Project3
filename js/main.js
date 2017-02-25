@@ -40,6 +40,7 @@ function hideThemeOptions(theme) {
     $colorSelect.children().toArray().reverse().forEach(option => {
         const $option = $(option);
 
+        // If the theme attribute is set get the text out of it
         $option.text($option.attr("theme"));
 
         if (!$option.text().includes(theme)) {
@@ -47,7 +48,10 @@ function hideThemeOptions(theme) {
         } else {
             $option.show();
 
+            // Store the theme text into the theme attribute
             $option.attr("theme", $option.text());
+
+            // Remoe the theme text from the color
             $option.text($option.text().replace(theme, ""));
             $colorSelect.val($option.val());
         }
@@ -147,10 +151,12 @@ $("form").submit(evt => {
     }
 });
 
+// Validate name field while typing
 $("#name").keyup(function (evt) {
     validateName();
 });
 
+// Validate email field while typing
 $("#mail").keyup(function (evt) {
     validateEmail();
 });
@@ -201,7 +207,6 @@ function readyToSubmit() {
     // If credit card is selected validate it's input
     let creditCardValid = true;
     if ($("#payment").val() === "credit card") {
-
         const ccNumValid = validate("#cc-num", /^\d{13,16}$/);
         const zipValid = validate("#zip", /^\d{5}$/);
         const cvvValid = validate("#cvv", /^\d{3}$/);
@@ -214,9 +219,9 @@ function readyToSubmit() {
 }
 
 // If the boolean expression is not valid create an error in the label with the given error message
-function fieldError($element, bool, message, errorMessage) {
+function fieldError($element, booleanValue, message, errorMessage) {
     const $label = $element.prev();
-    if (!bool) {
+    if (!booleanValue) {
         $label.text(`${message} (${errorMessage})`);
         $label[0].style = "color: red";
     } else {
