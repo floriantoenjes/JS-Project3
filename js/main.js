@@ -147,11 +147,11 @@ $("form").submit(evt => {
     }
 });
 
-$("#name").keyup(function(evt) {
+$("#name").keyup(function (evt) {
     validateName();
 });
 
-$("#mail").keyup(function(evt) {
+$("#mail").keyup(function (evt) {
     validateEmail();
 });
 
