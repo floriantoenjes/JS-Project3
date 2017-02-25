@@ -161,17 +161,19 @@ function readyToSubmit() {
         $nameLabel[0].style = "color: black";
     }
 
+
     // Check if the email is correctly formatted
     const $email = $("#mail");
     const emailCorrect = $email.val().trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
-    const $label = $email.prev();
+    const $emailLabel = $email.prev();
     if (!emailCorrect) {
-        $label.text("Email: (please provide a valid email address)");
-        $label[0].style = "color: red";
+        $emailLabel.text("Email: (please provide a valid email address)");
+        $emailLabel[0].style = "color: red";
     } else {
-        $label.text("Email:");
-        $label[0].style = "color: black";
+        $emailLabel.text("Email:");
+        $emailLabel[0].style = "color: black";
     }
+
 
     // Check if an activity is selected
     let activityChecked = false;
@@ -189,7 +191,7 @@ function readyToSubmit() {
 
 
     // If credit card is selected validate it's input
-    let creditCardValid = false;
+    let creditCardValid = true;
     if ($("#payment").val() === "credit card") {
         const ccNumValid = $("#cc-num").val().match(/\d{13,16}/);
         if (!ccNumValid) {
@@ -210,5 +212,5 @@ function readyToSubmit() {
         creditCardValid = ccNumValid && zipValid && cvvValid;
     }
 
-    return (nameFieldFilled && emailCorrect && activityChecked);
+    return (nameFieldFilled && emailCorrect && activityChecked && creditCardValid);
 }
