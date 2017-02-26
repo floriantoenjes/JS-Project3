@@ -59,6 +59,7 @@ function hideThemeOptions(theme) {
     $colorSelect.show();
 }
 
+
 // Only show selected payment option
 const $creditCard = $("#credit-card").hide();
 const $paypal = $creditCard.next().hide();
@@ -88,6 +89,7 @@ $("#payment").change(function () {
             break;
     }
 });
+
 
 // Bind a function to the change event of the activity checkboxes
 const $activities = $(".activities");
@@ -144,7 +146,7 @@ function getDatetime($element) {
 }
 
 
-// Prevent normal form submission
+// Prevent normal form submission if not ready to submit
 $("form").submit(evt => {
     if (!readyToSubmit()) {
         evt.preventDefault();
@@ -206,6 +208,7 @@ function readyToSubmit() {
     let paymentValid = true;
     const $paymentSelect = $("#payment");
     $paymentSelect[0].style = "border-color: none;";
+    $("#paymentError").remove();
     if ($paymentSelect.val() === "credit card") {
         const ccNumValid = validate("#cc-num", /^\d{13,16}$/);
         const zipValid = validate("#zip", /^\d{5}$/);
@@ -215,6 +218,7 @@ function readyToSubmit() {
     } else if ($paymentSelect.val() === "select_method") {
         paymentValid = false;
         $paymentSelect[0].style = "border-color: red;";
+        $("<p id='paymentError' style='color: red;'>Please select a payment option</p>").insertAfter($bitcoin);
     }
 
     // Finally return if all the fields are ready for submission
