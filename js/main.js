@@ -157,7 +157,7 @@ $("#mail").keyup(function (evt) {
 function validateName() {
     const $nameField = $("#name");
     const nameFieldFilled = $nameField.val().trim().length > 0;
-    fieldError($nameField, nameFieldFilled, "Name:", "please provide your name");
+    validateField($nameField, nameFieldFilled, "Name:", "please provide your name");
 
     return nameFieldFilled;
 }
@@ -165,7 +165,7 @@ function validateName() {
 function validateEmail() {
     const $email = $("#mail");
     const emailCorrect = $email.val().trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
-    fieldError($email, emailCorrect, "Email:", "please provide a valid email address");
+    validateField($email, emailCorrect, "Email:", "please provide a valid email address");
 
     return emailCorrect;
 }
@@ -213,7 +213,7 @@ function readyToSubmit() {
 }
 
 // If the boolean expression is not valid create an error in the label with the given error message
-function fieldError($element, booleanValue, message, errorMessage) {
+function validateField($element, booleanValue, message, errorMessage) {
     const $label = $element.prev();
     if (!booleanValue) {
         $label.text(`${message} (${errorMessage})`);
