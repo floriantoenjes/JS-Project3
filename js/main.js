@@ -1,9 +1,9 @@
 "use strict";
 
-// Set focus on the first textfield
+/* Set focus on the first textfield */
 $("#name")[0].focus();
 
-// If "other" option is selected show "other-title" textfield
+/* If "other" option is selected show "other-title" textfield */
 const $otherTitle = $("#other-title").hide();
 $("#title").change(function (evt) {
     if ($(this).val() === "other") {
@@ -14,7 +14,7 @@ $("#title").change(function (evt) {
 });
 
 
-// Only show t-shirt colors that belong to selected theme
+/* Only show t-shirt colors that belong to selected theme */
 const $colorSelect = $("#color");
 $colorSelect.children().hide();
 
@@ -51,7 +51,7 @@ function hideThemeOptions(theme) {
             // Store the theme text into the theme attribute
             $option.attr("theme", $option.text());
 
-            // Remoe the theme text from the color
+            // Remove the theme text from the color option
             $option.text($option.text().replace(theme, ""));
             $colorSelect.val($option.val());
         }
@@ -60,7 +60,7 @@ function hideThemeOptions(theme) {
 }
 
 
-// Only show selected payment option
+/* Only show the selected payment option */
 const $creditCard = $("#credit-card").hide();
 const $paypal = $creditCard.next().hide();
 const $bitcoin = $paypal.next().hide();
@@ -90,31 +90,26 @@ $("#payment").change(function () {
     }
 });
 
-
-// Bind a function to the change event of the activity checkboxes
+/* Make activity checkboxes interactive */
 const $activities = $(".activities");
 $(".activities input").change(function (evt) {
     const $label = $(this).parent();
-    let sum = 0;
     const datetime = getDatetime($label);
+    let sum = 0;
 
-    // Get the sum of this activity
     if (this.checked) {
-        sum += getPrice($label);
+        sum += getPriceInDollar($label);
     }
 
-    // Add up the cost of checked siblings
     $label.siblings("label").toArray().forEach(sibling => {
         const input = sibling.firstChild;
         const datetimeOfSibling = getDatetime($(sibling));
 
-        // If the sibling's input is checked add it's price to the sum
         if (input.checked) {
-            const price = getPrice($(sibling))
+            const price = getPriceInDollar($(sibling))
             sum += price;
         }
 
-        // Check if the time is already occupied
         if (this.checked && datetime === datetimeOfSibling) {
             $(input).attr("disabled", true);
             sibling.style = "color: grey";
@@ -124,7 +119,6 @@ $(".activities input").change(function (evt) {
         }
     });
 
-    // Append the sum to the activities
     $("#sum").remove();
     if (sum > 0) {
         $activities.append($(`<p id='sum'>Total: \$${sum}</p>`));
@@ -132,12 +126,10 @@ $(".activities input").change(function (evt) {
 
 });
 
-// Extract the price in dollar
-function getPrice($element) {
+function getPriceInDollar($element) {
     return parseFloat($element.text().match(/\$(\d+)/)[1]);
 }
 
-// Extract the datetime
 function getDatetime($element) {
     const results = $element.text().match(/\w+\s\d{1,2}[ap]m-\d{1,2}[ap]m/);
     if (results !== null) {
@@ -146,7 +138,6 @@ function getDatetime($element) {
 }
 
 
-// Prevent normal form submission if not ready to submit
 $("form").submit(evt => {
     if (!readyToSubmit()) {
         evt.preventDefault();
@@ -182,10 +173,7 @@ function validateEmail() {
 // Validate the form and check if it's ready to submit
 function readyToSubmit() {
 
-    // Check if the name field is blank
     const nameFieldFilled = validateName();
-
-    // Check if the email is correctly formatted
     const emailCorrect = validateEmail();
 
     // Check if an activity is selected
@@ -196,7 +184,7 @@ function readyToSubmit() {
         }
     });
 
-    // Add / Reset activity error message
+    /* Add / Reset activity error message */
     $("#activityError").remove();
     if (!activityChecked) {
         const $legend = $(".activities legend");
@@ -204,15 +192,15 @@ function readyToSubmit() {
         $("<p id='activityError' style='color: red;'>Please select an Activity</p>").insertAfter($legend);
     }
 
-    // If credit card is selected validate it's input
+    /* If credit card is selected validate it's input */
     let paymentValid = true;
     const $paymentSelect = $("#payment");
     $paymentSelect[0].style = "border-color: none;";
     $("#paymentError").remove();
     if ($paymentSelect.val() === "credit card") {
-        const ccNumValid = validate("#cc-num", /^\d{13,16}$/);
-        const zipValid = validate("#zip", /^\d{5}$/);
-        const cvvValid = validate("#cvv", /^\d{3}$/);
+        const ccNumValid = validateWithRegex("#cc-num", /^\d{13,16}$/);
+        const zipValid = validateWithRegex("#zip", /^\d{5}$/);
+        const cvvValid = validateWithRegex("#cvv", /^\d{3}$/);
 
         paymentValid = ccNumValid && zipValid && cvvValid;
     } else if ($paymentSelect.val() === "select_method") {
@@ -221,7 +209,6 @@ function readyToSubmit() {
         $("<p id='paymentError' style='color: red;'>Please select a payment option</p>").insertAfter($bitcoin);
     }
 
-    // Finally return if all the fields are ready for submission
     return (nameFieldFilled && emailCorrect && activityChecked && paymentValid);
 }
 
@@ -237,8 +224,7 @@ function fieldError($element, booleanValue, message, errorMessage) {
     }
 }
 
-// Validate the selected element with a given regular expression
-function validate(selector, regex) {
+function validateWithRegex(selector, regex) {
     const valid = $(selector).val().match(regex);
     const $label = $(selector).prev();
     if (!valid) {
