@@ -164,8 +164,13 @@ function validateName() {
 
 function validateEmail() {
     const $email = $("#mail");
-    const emailCorrect = $email.val().trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
-    validateField($email, emailCorrect, "Email:", "please provide a valid email address");
+    const emailEmpty = $email.val().trim().length === 0
+    const emailCorrect = $email.val().trim().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/);
+    if (emailEmpty) {
+        validateField($email, emailCorrect, "Email:", "please enter a value");
+    } else {
+        validateField($email, emailCorrect, "Email:", "please provide a valid email address");
+    }
 
     return emailCorrect;
 }
